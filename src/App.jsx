@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
       setMessages([
         ...messages,
         {
+          id: uuidv4(),
           name: message,
           value: parseFloat(value).toFixed(2),
           type: statementType,
@@ -91,8 +93,8 @@ function App() {
           <button onClick={handleAddNewMessage}>+</button>
         </div>
         <div>
-          {messages.map(({ name, value, type, date }) => (
-            <div className="card">
+          {messages.map(({ name, value, type, date, id }) => (
+            <div className="card" key={id}>
               <div className="card-info">
                 <h4>{name}</h4>
                 <p>{date}</p>
