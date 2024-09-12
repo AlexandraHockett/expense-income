@@ -8,11 +8,38 @@ function App() {
     statementType: "",
   });
 
+  const [showError, setShowError] = useState({
+    message: false,
+    value: false,
+  });
+
   const handleUpdateInput = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleAddNewMessage = () => {
+    const { message, value } = input;
+
+    if (!message) {
+      return setShowError({
+        message: true,
+        value: false,
+      });
+    } else if (!value) {
+      return setShowError({
+        message: false,
+        value: true,
+      });
+    } else {
+      setShowError({
+        message: false,
+        value: false,
+      });
+    }
+    //add logic to add statement
   };
 
   return (
@@ -25,18 +52,28 @@ function App() {
             placeholder="Income or expense"
             onChange={handleUpdateInput}
             value={input.message}
+            name="message"
+            style={
+              showError.message ? { borderColor: "rgb(206, 76, 76)" } : null
+            }
           />
           <input
             type="number"
             placeholder="5000€"
             onChange={handleUpdateInput}
             value={input.value}
+            name="value"
+            style={showError.value ? { borderColor: "rgb(206, 76, 76)" } : null}
           />
-          <select onChange={handleUpdateInput} value={input.statementType}>
+          <select
+            onChange={handleUpdateInput}
+            value={input.statementType}
+            name="statementType"
+          >
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
-          <button>+</button>
+          <button onClick={handleAddNewMessage}>+</button>
         </div>
         <div>
           <div className="card">
