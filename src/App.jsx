@@ -2,16 +2,17 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [inputMessage, setInputMessage] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [statementType, setStatementType] = useState("income");
+  const [input, setInput] = useState({
+    message: "",
+    value: "",
+    statementType: "",
+  });
 
-  const handleChangeInputMessage = (e) => {
-    setInputMessage(e.target.value);
-  };
-
-  const handleChangeInputValue = (e) => {
-    setInputValue(e.target.value);
+  const handleUpdateInput = (e) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
@@ -22,21 +23,16 @@ function App() {
           <input
             type="text"
             placeholder="Income or expense"
-            onChange={handleChangeInputMessage}
-            value={inputMessage}
+            onChange={handleUpdateInput}
+            value={input.message}
           />
           <input
             type="number"
-            placeholder=""
-            onChange={handleChangeInputValue}
-            value={inputValue}
+            placeholder="5000€"
+            onChange={handleUpdateInput}
+            value={input.value}
           />
-          <select
-            onChange={(e) => {
-              setStatementType(e.target.value);
-            }}
-            value={statementType}
-          >
+          <select onChange={handleUpdateInput} value={input.statementType}>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
