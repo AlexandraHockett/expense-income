@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
@@ -14,6 +14,27 @@ function App() {
     message: false,
     value: false,
   });
+
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const newTotal = messages.reduce((sum, { type, value }) => {
+      if (type === "expense") {
+        return sum - parseFloat(value);
+      } else return sum + parseFloat(value);
+    }, 0);
+    setTotal(newTotal);
+  }, [messages]);
+
+  const renderTotal = () => {
+    if (total > 0) {
+      return <h1 className="total-text success">+{Math.abs(total)}</h1>;
+    } else if (total < 0) {
+      return <h1 className="total-text danger">-{Math.abs(total)}</h1>;
+    } else {
+      return <h1 className="total-text">{Math.abs(total)}</h1>;
+    }
+  };
 
   const handleUpdateInput = (e) => {
     setInput({
@@ -62,7 +83,7 @@ function App() {
   return (
     <main>
       <div>
-        <h1 className="total-text">0</h1>
+        {renderTotal()}
         <div className="input-container">
           <input
             type="text"
